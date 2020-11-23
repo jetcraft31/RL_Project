@@ -110,7 +110,6 @@ class Simu:
             state = next_state
 
             if done:
-                # print("train nb steps:", t)
                 return episode
 
     def train(self, pw, params, policy, critic, policy_loss_file, critic_loss_file, study_name, beta=0) -> None:
@@ -131,6 +130,7 @@ class Simu:
         """
         for cycle in range(params.nb_cycles):
             batch = self.make_monte_carlo_batch(params.nb_trajs, params.render, policy)
+            print("Episode :" +str(cycle))             
 
             # Update the policy
             batch2 = batch.copy_batch()

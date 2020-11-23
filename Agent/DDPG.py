@@ -3,8 +3,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import policies.DDPG_actor
-import critics.DDPG_critic
+import policies.DDPG_actor as DDPG_actor
+import critics.DDPG_critic as DDPG_critic
 
 
 device = torch.device("cpu" if torch.cuda.is_available() else "cpu")
@@ -76,9 +76,9 @@ class DDPG(object):
 	"""
 
 
-	def save(self,env_name,score):
+	def save(self,env_name,score,team_name):
 		traced = torch.jit.script(self.actor_target)
-		torch.jit.save(traced, "data/policies/" + str(env_name)+ "#_#" +"DDPGAgent" +'#200#'+ str(score) +".zip")
+		torch.jit.save(traced, "data/policies/" + str(env_name)+ "#"+team_name + '_' + str(score)+'_DDPG'+"#" +"DDPGAgent" +'#200#'+ str(score) +".zip")
 
 
 

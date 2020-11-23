@@ -54,9 +54,9 @@ if __name__ == "__main__":
 	parser.add_argument("--policy", default="TD3")                  # Policy name (TD3, DDPG or OurDDPG)
 	parser.add_argument("--env", default="Pendulum-v0")          # OpenAI gym environment name
 	parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds
-	parser.add_argument("--start_timesteps", default=25e3, type=int)# Time steps initial random policy is used
-	parser.add_argument("--eval_freq", default=5e3, type=int)       # How often (time steps) we evaluate
-	parser.add_argument("--max_timesteps", default=1e6, type=int)   # Max time steps to run environment
+	parser.add_argument("--start_timesteps", default=1e5, type=int)# Time steps initial random policy is used
+	parser.add_argument("--eval_freq", default=2e4, type=int)       # How often (time steps) we evaluate
+	parser.add_argument("--max_timesteps", default=2e5, type=int)   # Max time steps to run environment
 	parser.add_argument("--expl_noise", default=0.1)                # Std of Gaussian exploration noise
 	parser.add_argument("--batch_size", default=256, type=int)      # Batch size for both actor and critic
 	parser.add_argument("--discount", default=0.99)                 # Discount factor
@@ -66,6 +66,8 @@ if __name__ == "__main__":
 	parser.add_argument("--policy_freq", default=2, type=int)       # Frequency of delayed policy updates
 	parser.add_argument("--save_model", action="store_true")        # Save model and optimizer parameters
 	parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
+	parser.add_argument('--team_name', type=str, default='default_team', help='team name')
+
 	args = parser.parse_args()
 
 	file_name = f"{args.policy}_{args.env}_{args.seed}"
@@ -143,7 +145,7 @@ if __name__ == "__main__":
 				policy.select_action(np.array(state))
 				+ np.random.normal(0, max_action * args.expl_noise, size=action_dim)
 			).clip(-max_action, max_action)
-
+		
 		# Perform action
 		next_state, reward, done, _ = env.step(action) 
 		done_bool = float(done) if episode_timesteps < env._max_episode_steps else 0
@@ -183,7 +185,7 @@ if __name__ == "__main__":
 			evaluations.append(eval_policy(policy, args.env, args.seed))
 			np.save(f"./results/{file_name}", evaluations)
 			if args.save_model: 
-				policy.save(args.env, evaluations[-1])
+				policy.save(args.env, evaluations[-1],args.team_name)
 	exploit_policy_loss_full(PolicyError)
 	exploit_critic_loss_full(CriticError)
 	exploit_reward_full(AllReward)

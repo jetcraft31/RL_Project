@@ -20,7 +20,8 @@ class Actor(nn.Module):
 	def forward(self, state):
 		a = F.relu(self.l1(state))
 		a = F.relu(self.l2(a))
-		return self.max_action * torch.tanh(self.l3(a))
+		a = self.max_action * torch.tanh(self.l3(a))
+		return a
 		
 		
 	@torch.jit.export
@@ -33,6 +34,7 @@ class Actor(nn.Module):
 		"""
 		state = torch.tensor(state)
 		action = self.forward(state)
+		print(action)
 		#action = np.clip(action,-1,1)
 		act: List[float] = action.data.tolist()
 		return act

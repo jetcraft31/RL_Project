@@ -112,9 +112,9 @@ class TD3(object):
 		torch.save(self.actor.state_dict(), filename + "_actor")
 		torch.save(self.actor_optimizer.state_dict(), filename + "_actor_optimizer")
 	"""
-	def save(self,env_name,score):
+	def save(self,env_name,score,team_name):
 		traced = torch.jit.script(self.actor_target)
-		torch.jit.save(traced, "data/policies/" + str(env_name)+ "#_#" +"TD3Agent" +'#200#'+ str(score) +".zip")
+		torch.jit.save(traced, "data/policies/" + str(env_name)+ "#"+team_name + '_' + str(score)+'_TD3'+"#" +"TD3Agent" +'#200#'+ str(score) +".zip")
 
 
 	def load(self, filename):
