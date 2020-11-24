@@ -91,6 +91,7 @@ class Simu:
             state = next_state
 
             if done:
+                print(total_reward)
                 # print("############ eval nb steps:", t)
                 return total_reward
 

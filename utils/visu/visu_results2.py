@@ -37,6 +37,15 @@ def exploit_reward_full(result) -> None:
     plt.savefig('data/results/rewards_' + '.pdf')
     plt.show()
 
+def exploit_duration_full(result) -> None:
+    plot_data(result, "duration ")
+
+    plt.xlabel("Cycles")
+    plt.ylabel("Duration")
+    plt.legend(loc="lower right")
+    plt.savefig('data/results/duration' + '.pdf')
+    plt.show()
+
 
 def exploit_critic_loss_full(result) -> None:
     plot_data(result, "critic loss ")
